@@ -3,14 +3,12 @@ import binascii
 from bitarray import bitarray
 import glob
 
-skip = 4	# first skip size (Byte)
-header_size = 128
-chunk_size = 8
-invert_cnt = 5
-prefix = "m_"
-suffix = "_m"
+def decode(path, prefix = "_"):
+    skip = 4	# first skip size (Byte)
+    header_size = 128
+    chunk_size = 8
+    invert_cnt = 5
 
-def decode(path, prefix = prefix):
     file_name = os.path.basename(path)
     write_path = os.path.join(os.path.dirname(path), prefix + file_name)
 
@@ -40,14 +38,15 @@ def decode(path, prefix = prefix):
         # write rest of bin datas
         rest = fi.read()
         fw.write(rest)
+    
+    print("Decoded: " + file_path)
 
 
 if __name__ == '__main__':
-    for file_path in glob.glob(sys.argv[1]):
+    for file_path in glob.glob(sys.argv[1], recursive=True):
         if not os.path.exists(file_path):
             print("Not exist: " + file_path)
         else:
             if os.path.isdir(file_path):
                 continue
-            decode(file_path, prefix)
-            print("Decoded: " + file_path)
+            decode(file_path, "m_")
