@@ -43,5 +43,11 @@ def decode(path, prefix = prefix):
 
 
 if __name__ == '__main__':
-    for file_name in glob.glob(sys.argv[1]):
-        decode(file_name, prefix)
+    for file_path in glob.glob(sys.argv[1]):
+        if not os.path.exists(file_path):
+            print("Not exist: " + file_path)
+        else:
+            if os.path.isdir(file_path):
+                continue
+            decode(file_path, prefix)
+            print("Decoded: " + file_path)
